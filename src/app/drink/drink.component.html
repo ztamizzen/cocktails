@@ -1,0 +1,26 @@
+<mat-card class="example-card" *ngIf="drink">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>{{ drink.strDrink }}</mat-card-title>
+      <mat-card-subtitle>{{ drink.strAlcoholic }}</mat-card-subtitle>
+      <mat-card-subtitle>{{ drink.strGlass }}</mat-card-subtitle>
+      <img mat-card-sm-image [src]="drink.strDrinkThumb" alt="" />
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    {{ drink.strInstructions }}
+    <h4>Ingredients</h4>
+    <ul>
+      <ng-container *ngFor="let ingredient of drink | keyvalue">
+        <li
+          *ngIf="
+            ingredient.key.startsWith('strIngredient') &&
+            ingredient.value !== null
+          "
+        >
+          {{ ingredient.value | json }}
+        </li>
+      </ng-container>
+    </ul>
+  </mat-card-content>
+</mat-card>
