@@ -1,0 +1,51 @@
+<form [formGroup]="filterForm" class="filter-form">
+  <mat-form-field *ngIf="categoryFilters">
+    <mat-label>Drinks categories</mat-label>
+    <mat-select #categoryFilter formControlName="category" name="category">
+      <mat-option
+        *ngFor="let drink of categoryFilters.drinks"
+        [value]="drink.strCategory"
+        >{{ drink.strCategory }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="ingredientsFilters">
+    <mat-label>Ingredient</mat-label>
+    <mat-select formControlName="ingredient" name="ingredient">
+      <mat-option
+        *ngFor="let drink of ingredientsFilters.drinks"
+        [value]="drink.strIngredient1"
+        >{{ drink.strIngredient1 }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="glassFilters">
+    <mat-label>Type of glass</mat-label>
+    <mat-select formControlName="glass" name="glass">
+      <mat-option
+        *ngFor="let drink of glassFilters.drinks"
+        [value]="drink.strGlass"
+        >{{ drink.strGlass }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field *ngIf="alcoholFilters">
+    <mat-label>Contains alcohol?</mat-label>
+    <mat-select formControlName="isAlcoholic" name="isAlcoholic">
+      <mat-option
+        *ngFor="let drink of alcoholFilters.drinks"
+        [value]="drink.strAlcoholic"
+        >{{ drink.strAlcoholic }}</mat-option
+      >
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <button
+      mat-mini-fab
+      color="primary"
+      aria-label="Example icon button with a delete icon"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+  </mat-form-field>
+</form>

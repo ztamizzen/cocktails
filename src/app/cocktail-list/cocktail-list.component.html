@@ -1,82 +1,22 @@
 <div class="content" role="main">
   <h2>List of cocktails</h2>
 
-  <form>
-    <mat-form-field *ngIf="categoryFilters">
-      <mat-label>Drinks categories</mat-label>
-      <mat-select [(ngModel)]="selectedCategoryFilter" name="category">
-        <mat-option
-          *ngFor="let drink of categoryFilters.drinks"
-          [value]="drink.strCategory"
-          >{{ drink.strCategory }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
+  <app-filters
+    [category]="selectedCategoryFilter"
+    [ingredient]="selectedIngredientFilter"
+    (categoryChanged)="categoryChanged($event)"
+    (ingredientChanged)="ingredientChanged($event)"
+    (glassChanged)="glassChanged($event)"
+    (isAlcoholicChanged)="isAlcoholicChanged($event)"
+  />
 
-    <mat-form-field *ngIf="ingredientsFilters">
-      <mat-label>Ingredient</mat-label>
-      <mat-select [(ngModel)]="selectedIngredientFilter" name="ingredient">
-        <mat-option
-          *ngFor="let drink of ingredientsFilters.drinks"
-          [value]="drink.strIngredient1"
-          >{{ drink.strIngredient1 }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
+  <app-drink
+    [drink]="randomCocktail"
+    [showBackButton]="false"
+    *ngIf="cocktailList.length === 0"
+  />
 
-    <mat-form-field *ngIf="alcoholFilters">
-      <mat-label>Alcohol/Non alcoholic</mat-label>
-      <mat-select [(ngModel)]="selectedAlcoholicFilter" name="isAlcoholic">
-        <mat-option
-          *ngFor="let drink of alcoholFilters.drinks"
-          [value]="drink.strAlcoholic"
-          >{{ drink.strAlcoholic }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field *ngIf="glassFilters">
-      <mat-label>Type of glass</mat-label>
-      <mat-select [(ngModel)]="selectedGlassFilter" name="glass">
-        <mat-option
-          *ngFor="let drink of glassFilters.drinks"
-          [value]="drink.strGlass"
-          >{{ drink.strGlass }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field>
-    <p>
-      selectedAlcoholicFilter: {{ selectedCategoryFilter }} /
-      selectedIngredientFilter: {{ selectedIngredientFilter }} /
-      selectedAlcoholicFilter: {{ selectedAlcoholicFilter }} /
-      selectedGlassFilter: {{ selectedGlassFilter }}
-    </p>
-  </form>
-
-  <mat-card class="example-card" *ngIf="randomCocktail">
-    <mat-card-header>
-      <mat-card-title-group>
-        <mat-card-title>{{ randomCocktail.strDrink }}</mat-card-title>
-        <mat-card-subtitle>{{ randomCocktail.strAlcoholic }}</mat-card-subtitle>
-        <mat-card-subtitle>{{ randomCocktail.strGlass }}</mat-card-subtitle>
-        <img mat-card-sm-image [src]="randomCocktail.strDrinkThumb" alt="" />
-      </mat-card-title-group>
-    </mat-card-header>
-    <mat-card-content>
-      {{ randomCocktail.strInstructions }}
-      <h4>Ingredients</h4>
-      <ul>
-        <ng-container *ngFor="let ingredient of randomCocktail | keyvalue">
-          <li
-            *ngIf="
-              ingredient.key.startsWith('strIngredient') &&
-              ingredient.value !== null
-            "
-          >
-            {{ ingredient.value | json }}
-          </li>
-        </ng-container>
-      </ul>
-    </mat-card-content>
-  </mat-card>
+  <div *ngIf="cocktailList.length > 0">
+    <app-drink-card *ngFor="let drink of cocktailList" [drink]="drink" />
+  </div>
 </div>

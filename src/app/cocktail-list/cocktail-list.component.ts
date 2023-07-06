@@ -1,29 +1,10 @@
-import { Component, Input, SimpleChanges } from '@angular/core';
-import {
-  CocktailsService,
-  type Cocktail,
-  type CocktailResponse,
-} from '../cocktails.service';
-
-interface Drinks {
-  drinks: Array<any>;
-}
-
-interface DrinkIsAlcoholicFilter {
-  drinks: Array<Record<'strAlcoholic', string>>;
-}
-
-interface DrinkCategoriesFilter {
-  drinks: Array<Record<'strCategory', string>>;
-}
-
-interface DrinkGlassesFilter {
-  drinks: Array<Record<'strGlass', string>>;
-}
-
-interface DrinkIngredientFilter {
-  drinks: Array<Record<'strIngredient1', string>>;
-}
+import { Component, SimpleChanges } from '@angular/core';
+import { CocktailsService, type CocktailComplete } from '../cocktails.service';
+import { IngredientFilter } from '../ingredient-filter';
+import { Cocktail } from '../cocktail';
+import { AlcoholFilter } from '../alcohol-filter';
+import { CategoryFilter } from '../category-filter';
+import { GlassesFilter } from '../glasses-filter';
 
 @Component({
   selector: 'app-cocktail-list',
@@ -33,16 +14,18 @@ interface DrinkIngredientFilter {
 export class CocktailListComponent {
   showDrink: boolean = false;
 
-  selectedAlcoholicFilter: string = '';
-  selectedCategoryFilter: string = '';
-  selectedGlassFilter: string = '';
-  selectedIngredientFilter: string = '';
+  selectedCategoryFilter!: string;
+  selectedIngredientFilter!: string;
+  selectedAlcoholicFilter!: string;
+  selectedGlassFilter!: string;
 
-  alcoholFilters?: DrinkIsAlcoholicFilter;
-  categoryFilters?: DrinkCategoriesFilter;
-  ingredientsFilters?: DrinkIngredientFilter;
-  glassFilters?: DrinkGlassesFilter;
-  randomCocktail?: Cocktail;
+  alcoholFilters?: AlcoholFilter;
+  categoryFilters?: CategoryFilter;
+  ingredientsFilters?: IngredientFilter;
+  glassFilters?: GlassesFilter;
+  randomCocktail?: CocktailComplete;
+
+  cocktailList: Cocktail[] = [];
 
   constructor(private cocktailsService: CocktailsService) {}
 
@@ -60,32 +43,65 @@ export class CocktailListComponent {
       this.ingredientsFilters = response;
     });
     this.cocktailsService.getRandomCocktail().subscribe((response) => {
-      let cocktail = response as CocktailResponse;
-      let firstCocktail = cocktail.drinks[0];
-      this.randomCocktail = {};
-      for (let key in firstCocktail) {
-        let e = new RegExp('^strIngredient(?<number>[0-9]*)$');
-        let r = e.exec(key);
-        if (r !== null && Number(r[1]) !== 0) {
-          let number: number = Number(r[1]);
-          let newKey = `strIngredient${number}`;
-          let ingrKey = `strIngredient${number}`;
-          let measureKey = `strMeasure${number}`;
-
-          if (firstCocktail[ingrKey] !== null)
-            this.randomCocktail[newKey] = `${
-              firstCocktail[measureKey] ? firstCocktail[measureKey] : ''
-            } ${firstCocktail[ingrKey]}`;
-          console.log(number, firstCocktail[ingrKey]);
-        } else {
-          this.randomCocktail[key] = firstCocktail[key];
-        }
-      }
-      console.log(this.randomCocktail);
+      this.randomCocktail = response as CocktailComplete;
     });
+
+    if (sessionStorage.getItem('selectedCategoryFilter')) {
+      this.selectedCategoryFilter = sessionStorage.getItem(
+        'selectedCategoryFilter'
+      ) as string;
+      this.categoryChanged(this.selectedCategoryFilter);
+    }
+    if (sessionStorage.getItem('selectedIngredientFilter')) {
+      this.selectedIngredientFilter = sessionStorage.getItem(
+        'selectedIngredientFilter'
+      ) as string;
+      this.ingredientChanged(this.selectedIngredientFilter);
+    }
+    if (sessionStorage.getItem('selectedAlcoholicFilter')) {
+      this.selectedAlcoholicFilter = sessionStorage.getItem(
+        'selectedAlcoholicFilter'
+      ) as string;
+      this.isAlcoholicChanged(this.selectedAlcoholicFilter);
+    }
+    if (sessionStorage.getItem('selectedGlassFilter')) {
+      this.selectedGlassFilter = sessionStorage.getItem(
+        'selectedGlassFilter'
+      ) as string;
+      this.glassChanged(this.selectedGlassFilter);
+    }
   }
 
   ngOnChanges(o: SimpleChanges) {
-    console.log(o);
+    console.log('ngOnChanges', o);
+  }
+
+  categoryChanged(value: string) {
+    if (value !== '')
+      this.cocktailsService.filterByCategory(value).subscribe((response) => {
+        console.log(response);
+        this.cocktailList = response as Cocktail[];
+      });
+  }
+  ingredientChanged(value: string) {
+    if (value !== '')
+      this.cocktailsService.filterByAlcohol(value).subscribe((response) => {
+        console.log(response);
+        this.cocktailList = response as Cocktail[];
+      });
+  }
+  glassChanged(value: string) {
+    if (value !== '')
+      this.cocktailsService.filterByGlass(value).subscribe((response) => {
+        console.log(response);
+        this.cocktailList = response as Cocktail[];
+      });
+  }
+  isAlcoholicChanged(value: string) {
+    if (value !== '')
+      this.cocktailsService.filterByAlcoholic(value).subscribe((response) => {
+        console.log(response);
+        this.cocktailList = response as Cocktail[];
+      });
   }
 }

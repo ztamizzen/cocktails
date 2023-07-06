@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-import { Cocktail } from '../cocktails.service';
+import { Component, Input } from '@angular/core';
+import { Location } from '@angular/common';
+import { CocktailComplete } from '../cocktails.service';
 
 @Component({
   selector: 'app-drink',
@@ -7,5 +8,10 @@ import { Cocktail } from '../cocktails.service';
   styleUrls: ['./drink.component.scss'],
 })
 export class DrinkComponent {
-  drink?: Cocktail;
+  @Input() drink: CocktailComplete | undefined;
+  @Input() showBackButton: boolean = true;
+  constructor(private _location: Location) {}
+  goBack() {
+    this._location.back();
+  }
 }

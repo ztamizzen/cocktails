@@ -18,9 +18,13 @@
             ingredient.value !== null
           "
         >
-          {{ ingredient.value | json }}
+          {{ ingredient.value }}
         </li>
       </ng-container>
     </ul>
   </mat-card-content>
+  <mat-card-actions align="end">
+    <a mat-button (click)="goBack()" *ngIf="showBackButton">Back</a>
+    <a mat-button [routerLink]="['/drink', drink.idDrink]">View</a>
+  </mat-card-actions>
 </mat-card>

@@ -1,0 +1,11 @@
+<div class="mini-card">
+  <img class="img" [src]="drink.strDrinkThumb" alt="" />
+  <a mat-button [routerLink]="['/drink', drink.idDrink]">{{
+    drink.strDrink
+  }}</a>
+  <button mat-mini-fab aria-label="Add as favorite" (click)="alert()">
+    <mat-icon>favorite</mat-icon>
+  </button>
+</div>
+
+<!-- { "strDrink": "151 Florida Bushwacker", "strDrinkThumb": "https://www.thecocktaildb.com/images/media/drink/rvwrvv1468877323.jpg", "idDrink": "14588" } -->

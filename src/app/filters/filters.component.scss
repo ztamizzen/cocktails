@@ -1,0 +1,13 @@
+.filter-form {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: 1000px) {
+    flex-wrap: wrap;
+  }
+
+  & mat-form-field:nth-child(5) {
+    flex-basis: 72px;
+  }
+}

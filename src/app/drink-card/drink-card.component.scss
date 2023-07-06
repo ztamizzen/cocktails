@@ -1,0 +1,19 @@
+.mini-card {
+  align-items: center;
+  display: grid;
+  gap: 4px 0;
+  grid-template-columns: 38px 1fr 40px;
+  margin-block-end: 12px;
+
+  .img {
+    max-width: 32px;
+  }
+  .title {
+    font-family: var(
+      --mdc-typography-button-font-family,
+      var(--mdc-typography-font-family, Roboto, sans-serif)
+    );
+    font-size: var(--mdc-typography-button-font-size, 14px);
+    font-weight: var(--mdc-typography-button-font-weight, 500);
+  }
+}
