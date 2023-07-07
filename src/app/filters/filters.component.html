@@ -39,13 +39,14 @@
       >
     </mat-select>
   </mat-form-field>
-  <mat-form-field>
+  <div class="clear-button">
     <button
       mat-mini-fab
       color="primary"
       aria-label="Example icon button with a delete icon"
+      (click)="reset()"
     >
       <mat-icon>delete</mat-icon>
     </button>
-  </mat-form-field>
+  </div>
 </form>

@@ -7,6 +7,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { CocktailBuilderService } from './cocktail-builder.service';
+import { DrinkListItem } from './drink-list-item';
 
 export interface CocktailComplete {
   [key: string]: string | undefined;
@@ -67,7 +68,7 @@ export interface CocktailResponse {
   drinks: Array<CocktailComplete>;
 }
 export interface DrinksListResponse {
-  drinks: Array<{ strDrink: string; strDrinkThumb: string; idDrink: string }>;
+  drinks: Array<DrinkListItem>;
 }
 
 @Injectable({

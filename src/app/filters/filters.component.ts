@@ -86,9 +86,9 @@ export class FiltersComponent {
     });
   }
 
-  updateSessionStorage(key: string, value: string) {
+  updateSessionStorage(key?: string, value?: string) {
     sessionStorage.clear();
-    sessionStorage.setItem(key, value);
+    if (key && value) sessionStorage.setItem(key, value);
   }
 
   resetFields(others: Record<string, string>) {
@@ -96,6 +96,7 @@ export class FiltersComponent {
   }
 
   reset(): void {
+    this.updateSessionStorage();
     this.filterForm?.reset();
   }
 }

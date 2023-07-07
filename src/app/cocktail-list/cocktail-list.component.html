@@ -10,6 +10,10 @@
     (isAlcoholicChanged)="isAlcoholicChanged($event)"
   />
 
+  <p *ngIf="currentSearchValue">
+    Showing filter for: <mark>{{ currentSearchValue }}</mark>
+  </p>
+
   <app-drink
     [drink]="randomCocktail"
     [showBackButton]="false"
@@ -18,5 +22,15 @@
 
   <div *ngIf="cocktailList.length > 0">
     <app-drink-card *ngFor="let drink of cocktailList" [drink]="drink" />
+    <mat-paginator
+      [disabled]="pagination.disabled"
+      [length]="pagination.length"
+      [pageSize]="pagination.pageSize"
+      [pageIndex]="pagination.pageIndex"
+      [pageSizeOptions]="pagination.pageSizeOptions"
+      (page)="paginationChanged($event)"
+      aria-label="Select page"
+    >
+    </mat-paginator>
   </div>
 </div>

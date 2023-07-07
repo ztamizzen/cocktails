@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -48,6 +49,7 @@ import { DrinkCardComponent } from './drink-card/drink-card.component';
     ReactiveFormsModule,
     MatListModule,
     MatIconModule,
+    MatPaginatorModule,
   ],
   providers: [
     CocktailsService,
