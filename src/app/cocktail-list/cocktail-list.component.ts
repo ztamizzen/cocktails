@@ -135,7 +135,8 @@ export class CocktailListComponent {
 
   paginateResponse(response: DrinkListItem[]) {
     return response.slice(
-      this.pagination.page * this.pagination.pageSize,
+      this.pagination.page *
+        Math.min(response.length, this.pagination.pageSize),
       this.pagination.pageSize * (this.pagination.page + 1)
     );
   }
