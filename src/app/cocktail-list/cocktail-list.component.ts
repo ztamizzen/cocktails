@@ -56,9 +56,11 @@ export class CocktailListComponent {
     this.cocktailsService.listIngredientFilters().subscribe((response) => {
       this.ingredientsFilters = response;
     });
-    this.cocktailsService.getRandomCocktail().subscribe((response) => {
-      this.randomCocktail = response as CocktailComplete;
-    });
+    this.cocktailsService
+      .getRandomCocktail()
+      .subscribe((response: CocktailComplete) => {
+        this.randomCocktail = response;
+      });
 
     if (sessionStorage.getItem('selectedCategoryFilter')) {
       this.selectedCategoryFilter = sessionStorage.getItem(
@@ -114,6 +116,18 @@ export class CocktailListComponent {
     }
   }
 
+  resetPagination(size: number = 0) {
+    this.pagination = {
+      pageSize: 10,
+      length: size,
+      page: 0,
+      pageIndex: 0,
+      pageSizeOptions: [5, 10, 25, 100],
+      disabled: false,
+      previousPage: 0,
+    };
+  }
+
   search() {
     switch (this.currentFilter) {
       case Filters.category:
@@ -137,7 +151,8 @@ export class CocktailListComponent {
     return response.slice(
       this.pagination.page *
         Math.min(response.length, this.pagination.pageSize),
-      this.pagination.pageSize * (this.pagination.page + 1)
+      Math.min(response.length, this.pagination.pageSize) *
+        (this.pagination.page + 1)
     );
   }
 
