@@ -27,6 +27,7 @@ export class FiltersComponent {
   @Output() ingredientChanged = new EventEmitter<string>();
   @Output() glassChanged = new EventEmitter<string>();
   @Output() isAlcoholicChanged = new EventEmitter<string>();
+  @Output() resetList = new EventEmitter();
 
   categoryFilters?: CategoryFilter;
   ingredientsFilters?: IngredientFilter;
@@ -98,5 +99,6 @@ export class FiltersComponent {
   reset(): void {
     this.updateSessionStorage();
     this.filterForm?.reset();
+    this.resetList.emit();
   }
 }

@@ -6,3 +6,17 @@
   max-width: 960px;
   padding: 0 16px;
 }
+
+.sortBy {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+
+  .sortGroup {
+    margin: 0 10px;
+  }
+
+  p {
+    flex: 1;
+  }
+}

@@ -1,7 +1,7 @@
 <form [formGroup]="filterForm" class="filter-form">
   <mat-form-field *ngIf="categoryFilters">
-    <mat-label>Drinks categories</mat-label>
-    <mat-select #categoryFilter formControlName="category" name="category">
+    <mat-label for="categoryFilter">Drinks categories</mat-label>
+    <mat-select formControlName="category" name="category" #categoryFilter>
       <mat-option
         *ngFor="let drink of categoryFilters.drinks"
         [value]="drink.strCategory"
@@ -10,8 +10,8 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field *ngIf="ingredientsFilters">
-    <mat-label>Ingredient</mat-label>
-    <mat-select formControlName="ingredient" name="ingredient">
+    <mat-label for="ingredient">Ingredient</mat-label>
+    <mat-select formControlName="ingredient" name="ingredient" #ingredient>
       <mat-option
         *ngFor="let drink of ingredientsFilters.drinks"
         [value]="drink.strIngredient1"
@@ -20,8 +20,8 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field *ngIf="glassFilters">
-    <mat-label>Type of glass</mat-label>
-    <mat-select formControlName="glass" name="glass">
+    <mat-label for="glass">Type of glass</mat-label>
+    <mat-select formControlName="glass" name="glass" #glass>
       <mat-option
         *ngFor="let drink of glassFilters.drinks"
         [value]="drink.strGlass"
@@ -30,8 +30,8 @@
     </mat-select>
   </mat-form-field>
   <mat-form-field *ngIf="alcoholFilters">
-    <mat-label>Contains alcohol?</mat-label>
-    <mat-select formControlName="isAlcoholic" name="isAlcoholic">
+    <mat-label for="isAlcoholic">Contains alcohol?</mat-label>
+    <mat-select formControlName="isAlcoholic" name="isAlcoholic" #isAlcoholic>
       <mat-option
         *ngFor="let drink of alcoholFilters.drinks"
         [value]="drink.strAlcoholic"

@@ -1,5 +1,6 @@
 import { Component, SimpleChanges } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { CocktailsService, type CocktailComplete } from '../cocktails.service';
 import { IngredientFilter } from '../ingredient-filter';
 import { Cocktail } from '../cocktail';
@@ -19,6 +20,10 @@ export class CocktailListComponent {
   showDrink: boolean = false;
   currentSearchValue!: string;
   currentFilter!: Filters;
+  sortByValue!: string;
+  sortOrderValue: string = 'ascending';
+  fullResponseList: DrinkListItem[] = [];
+  paginationUpdated: boolean = false;
 
   selectedCategoryFilter!: string;
   selectedIngredientFilter!: string;
@@ -92,6 +97,12 @@ export class CocktailListComponent {
     console.log('ngOnChanges', o);
   }
 
+  resetList() {
+    this.fullResponseList = this.cocktailList = [];
+    this.updatePagination(0);
+    console.log(this.fullResponseList, this.cocktailList);
+  }
+
   paginationChanged(pageEvent: PageEvent) {
     // if pageSize is updated we reset everything, or do some math magic
     if (pageEvent.pageSize !== this.pagination.pageSize) {
@@ -104,6 +115,7 @@ export class CocktailListComponent {
       this.pagination.pageIndex = pageEvent.pageIndex;
     }
     this.pagination.pageSize = pageEvent.pageSize;
+    this.paginationUpdated = true;
     this.search();
   }
 
@@ -158,53 +170,89 @@ export class CocktailListComponent {
 
   categoryChanged(value: string) {
     if (value) {
-      this.currentSearchValue = value;
-      this.currentFilter = Filters.category;
-      this.cocktailsService
-        .filterByCategory(value)
-        .subscribe((response: DrinkListItem[]) => {
-          this.updatePagination(response.length);
-          this.cocktailList = this.paginateResponse(response);
-        });
+      if (this.paginationUpdated) {
+        this.updatePagination(this.fullResponseList.length);
+        this.cocktailList = this.paginateResponse(this.fullResponseList);
+        this.paginationUpdated = false;
+      } else {
+        this.currentSearchValue = value;
+        this.currentFilter = Filters.category;
+        this.cocktailsService
+          .filterByCategory(value)
+          .subscribe((response: DrinkListItem[]) => {
+            this.fullResponseList = response;
+            this.updatePagination(this.fullResponseList.length);
+            this.cocktailList = this.paginateResponse(this.fullResponseList);
+          });
+      }
     }
   }
 
   ingredientChanged(value: string) {
     if (value) {
-      this.currentSearchValue = value;
-      this.currentFilter = Filters.ingredient;
-      this.cocktailsService
-        .filterByAlcohol(value)
-        .subscribe((response: DrinkListItem[]) => {
-          this.updatePagination(response.length);
-          this.cocktailList = this.paginateResponse(response);
-        });
+      if (this.paginationUpdated) {
+        this.updatePagination(this.fullResponseList.length);
+        this.cocktailList = this.paginateResponse(this.fullResponseList);
+        this.paginationUpdated = false;
+      } else {
+        this.currentSearchValue = value;
+        this.currentFilter = Filters.ingredient;
+        this.cocktailsService
+          .filterByAlcohol(value)
+          .subscribe((response: DrinkListItem[]) => {
+            this.fullResponseList = response;
+            this.updatePagination(this.fullResponseList.length);
+            this.cocktailList = this.paginateResponse(this.fullResponseList);
+          });
+      }
     }
   }
 
   glassChanged(value: string) {
     if (value) {
-      this.currentSearchValue = value;
-      this.currentFilter = Filters.glass;
-      this.cocktailsService
-        .filterByGlass(value)
-        .subscribe((response: DrinkListItem[]) => {
-          this.updatePagination(response.length);
-          this.cocktailList = this.paginateResponse(response);
-        });
+      if (this.paginationUpdated) {
+        this.updatePagination(this.fullResponseList.length);
+        this.cocktailList = this.paginateResponse(this.fullResponseList);
+        this.paginationUpdated = false;
+      } else {
+        this.currentSearchValue = value;
+        this.currentFilter = Filters.glass;
+        this.cocktailsService
+          .filterByGlass(value)
+          .subscribe((response: DrinkListItem[]) => {
+            this.fullResponseList = response;
+            this.updatePagination(this.fullResponseList.length);
+            this.cocktailList = this.paginateResponse(this.fullResponseList);
+          });
+      }
     }
   }
 
   isAlcoholicChanged(value: string) {
     if (value) {
-      this.currentSearchValue = value;
-      this.currentFilter = Filters.alcohol;
-      this.cocktailsService
-        .filterByAlcoholic(value)
-        .subscribe((response: DrinkListItem[]) => {
-          this.updatePagination(response.length);
-          this.cocktailList = this.paginateResponse(response);
-        });
+      if (this.paginationUpdated) {
+        this.updatePagination(this.fullResponseList.length);
+        this.cocktailList = this.paginateResponse(this.fullResponseList);
+        this.paginationUpdated = false;
+      } else {
+        this.currentSearchValue = value;
+        this.currentFilter = Filters.alcohol;
+        this.cocktailsService
+          .filterByAlcoholic(value)
+          .subscribe((response: DrinkListItem[]) => {
+            this.fullResponseList = response;
+            this.updatePagination(this.fullResponseList.length);
+            this.cocktailList = this.paginateResponse(this.fullResponseList);
+          });
+      }
     }
+  }
+
+  sortBy(change: MatButtonToggleChange) {
+    console.log(change, this.sortByValue);
+  }
+
+  sortOrder(change: MatButtonToggleChange) {
+    console.log(change, this.sortOrderValue);
   }
 }
