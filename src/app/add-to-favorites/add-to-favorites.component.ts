@@ -1,63 +1,44 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { Cocktail } from '../cocktail';
-import {
-  AddToFavorites,
-  GetFavorites,
-  LoadSuccess,
-  RemoveFromFavorites,
-  Reset,
-} from '../store/actions';
+import { AddToFavorites, RemoveFromFavorites, Reset } from '../store/actions';
+import { selectFavorites } from '../store/selectors';
+import { FavoritesState } from '../favorites-state';
 
 @Component({
   selector: 'app-add-to-favorites',
   templateUrl: './add-to-favorites.component.html',
   styleUrls: ['./add-to-favorites.component.scss'],
 })
-export class AddToFavoritesComponent {
+export class AddToFavoritesComponent implements OnInit {
   @Input() drink?: Cocktail;
-  favorites$!: Observable<Array<Cocktail>>;
+  favorites$!: Observable<FavoritesState>;
+  isFavorite = false;
 
-  constructor(private store: Store<{ favorites: [] }>) {
-    // TODO: Connect this.favorites$ to the current favorites state
-    this.favorites$ = store.select('favorites');
+  constructor(private store: Store<any>) {
+    this.favorites$ = store.select(selectFavorites);
     this.favorites$.subscribe((favs) => {
-      console.log(favs);
-      if (this.drink) {
-        console.log(
-          'isDrink',
-          favs.find((d) => {
-            return d.idDrink === this.drink?.idDrink;
-          })
-        );
+      if (this.drink && favs.favorites && favs.favorites.length) {
+        this.isFavorite =
+          favs.favorites.find((d) => this.drink?.idDrink === d.idDrink) !==
+          undefined;
       }
     });
   }
 
+  ngOnInit() {}
+
   addToFavorites() {
-    // TODO: dispatch ActionTypes.Add, send in the @Input of Drink this.drink
-    this.store.dispatch(AddToFavorites({ drink: this.drink as Cocktail }));
-  }
-
-  getFavorites() {
-    // TODO: dispatch ActionTypes.LoadItems
-    this.store.dispatch(GetFavorites());
-  }
-
-  removeFromFavorites() {
-    // TODO: dispatch ActionTypes.Remove removes the @Input drink if it's in the list
-    this.store.dispatch(RemoveFromFavorites({ drink: this.drink as Cocktail }));
-  }
-
-  load() {
-    // TODO: dispatch ActionTypes.LoadSuccess
-    this.store.dispatch(LoadSuccess());
-  }
-
-  reset() {
-    // TODO: dispatch ActionTypes.Reset
-    alert('Working on it');
-    this.store.dispatch(Reset());
+    const drink: Cocktail = {
+      idDrink: this.drink?.idDrink,
+      strDrinkThumb: this.drink?.strDrinkThumb,
+      strDrink: this.drink?.strDrink,
+    };
+    if (this.isFavorite) {
+      this.store.dispatch(RemoveFromFavorites({ drink }));
+    } else {
+      this.store.dispatch(AddToFavorites({ drink }));
+    }
   }
 }

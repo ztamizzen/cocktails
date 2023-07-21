@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CocktailComplete, CocktailsService } from '../cocktails.service';
 import { ActivatedRoute } from '@angular/router';
+import { Store } from '@ngrx/store';
+import { CocktailComplete, CocktailsService } from '../cocktails.service';
+import { FavoritesState } from '../favorites-state';
 
 @Component({
   selector: 'app-drink-details',
@@ -9,18 +11,20 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class DrinkDetailsComponent implements OnInit {
   drink: CocktailComplete | undefined;
+
   constructor(
     private route: ActivatedRoute,
-    private cocktailsService: CocktailsService
+    private cocktailsService: CocktailsService,
+    private store: Store<FavoritesState>
   ) {}
+
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
     const drinkIdFromRoute: string = routeParams.get('drinkId') as string;
-    this.cocktailsService
-      .getCocktail(drinkIdFromRoute)
-      .subscribe((response) => {
-        this.drink = response;
-        console.log(this.drink);
-      });
+    this.cocktailsService.getCocktail(drinkIdFromRoute).subscribe((drink) => {
+      this.drink = drink;
+      console.log(this.drink);
+    });
+    this.store.subscribe((f) => void console.log(f));
   }
 }

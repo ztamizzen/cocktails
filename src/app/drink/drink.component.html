@@ -1,14 +1,19 @@
 <mat-card class="example-card" *ngIf="drink">
   <mat-card-header>
-    <mat-card-title-group>
-      <mat-card-title>{{ drink.strDrink }}</mat-card-title>
+    <mat-card-title-group class="title-group">
+      <app-add-to-favorites [drink]="drink" />
+      <mat-card-title>
+        {{ drink.strDrink }}
+      </mat-card-title>
       <mat-card-subtitle>{{ drink.strAlcoholic }}</mat-card-subtitle>
       <mat-card-subtitle>{{ drink.strGlass }}</mat-card-subtitle>
-      <img mat-card-sm-image [src]="drink.strDrinkThumb" alt="" />
     </mat-card-title-group>
   </mat-card-header>
+  <img mat-card-image [src]="drink.strDrinkThumb" alt="" />
   <mat-card-content>
-    {{ drink.strInstructions }}
+    <p>
+      {{ drink.strInstructions }}
+    </p>
     <h4>Ingredients</h4>
     <ul>
       <ng-container *ngFor="let ingredient of drink | keyvalue">
@@ -24,7 +29,7 @@
     </ul>
   </mat-card-content>
   <mat-card-actions align="end">
-    <a mat-button (click)="goBack()" *ngIf="showBackButton">Back</a>
-    <a mat-button [routerLink]="['/drink', drink.idDrink]">View</a>
+    <a mat-button (click)="goBack()" *ngIf="showBackButton">BACK</a>
+    <a mat-button [routerLink]="['/drink', drink.idDrink]">VIEW</a>
   </mat-card-actions>
 </mat-card>

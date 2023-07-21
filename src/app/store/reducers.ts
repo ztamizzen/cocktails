@@ -1,26 +1,52 @@
 import { createReducer, on } from '@ngrx/store';
 import * as FavoriteActions from './actions';
-import { Cocktail } from '../cocktail';
 import { FavoritesState } from '../favorites-state';
+import { uniqueArray } from '../favorites.service';
 
-export const initialState: FavoritesState = { favorites: [] };
+export const initialState: FavoritesState = {
+  favorites: [],
+  error: null,
+  status: 'pending',
+};
 
 export const favoriteReducer = createReducer(
   initialState,
   on(FavoriteActions.AddToFavorites, (state, value) => {
-    state.favorites.push({ ...value.drink });
-    return state;
+    const favorites = {
+      favorites: uniqueArray([...state.favorites, value.drink]),
+      error: null,
+      status: 'success' as const,
+    };
+    return favorites;
   }),
-  on(FavoriteActions.GetFavorites, (state) => state),
-  on(FavoriteActions.LoadSuccess, (state) => state),
+  on(FavoriteActions.LoadFavorites, (state) => ({
+    ...state,
+    status: 'loading' as const,
+  })),
+  on(FavoriteActions.LoadSuccess, (state, { favorites }) => ({
+    ...state,
+    error: null,
+    favorites: favorites || [], // it ended up NULL at some point
+    status: 'success' as const,
+  })),
+  on(FavoriteActions.LoadFailure, (state, { error }) => ({
+    ...state,
+    error,
+    favorites: [],
+    status: 'error' as const,
+  })),
   on(FavoriteActions.RemoveFromFavorites, (state, value) => {
-    const idx = state.favorites.indexOf(value.drink);
-    if (idx) {
-      state.favorites.splice(idx, 1);
-    }
-    return state;
+    return {
+      ...state,
+      favorites: state.favorites.filter(
+        (f) => f.idDrink !== value.drink.idDrink
+      ),
+    };
   }),
   on(FavoriteActions.Reset, () => ({
     favorites: [],
-  }))
+    error: null,
+    status: 'success' as const,
+  })),
+  on(FavoriteActions.Save, (state) => state)
 );

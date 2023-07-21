@@ -1,0 +1,28 @@
+.favorite-sheet {
+  &__header {
+    align-items: center;
+    display: grid;
+    grid-template-columns: 1fr 48px;
+  }
+  &__button {
+    justify-self: end;
+  }
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  &__list-item {
+    align-items: center;
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    justify-content: space-between;
+    list-style-type: none;
+    &:not(:last-of-type) {
+      padding-block-end: 4px;
+    }
+  }
+  &__list-image {
+    max-height: 40px;
+  }
+}

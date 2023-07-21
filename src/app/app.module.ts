@@ -14,7 +14,9 @@ import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatBottomSheetModule } from '@angular/material/bottom-sheet';
 import { StoreModule } from '@ngrx/store';
+import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +29,10 @@ import { FiltersComponent } from './filters/filters.component';
 import { DrinkCardComponent } from './drink-card/drink-card.component';
 import { favoriteReducer } from './store/reducers';
 import { AddToFavoritesComponent } from './add-to-favorites/add-to-favorites.component';
+import { EffectsModule } from '@ngrx/effects';
+import { FavoritesEffects } from './store/favorites.effect';
+import { FavoritesSheetComponent } from './favorites-sheet/favorites-sheet.component';
+import { metaReducers } from './store/debug-reducer';
 
 @NgModule({
   declarations: [
@@ -37,6 +43,7 @@ import { AddToFavoritesComponent } from './add-to-favorites/add-to-favorites.com
     FiltersComponent,
     DrinkCardComponent,
     AddToFavoritesComponent,
+    FavoritesSheetComponent,
   ],
   imports: [
     BrowserModule,
@@ -56,7 +63,10 @@ import { AddToFavoritesComponent } from './add-to-favorites/add-to-favorites.com
     MatIconModule,
     MatPaginatorModule,
     MatButtonToggleModule,
-    StoreModule.forRoot({ favorites: favoriteReducer }),
+    MatBottomSheetModule,
+    StoreModule.forRoot({ favorites: favoriteReducer }, { metaReducers }),
+    EffectsModule.forRoot(FavoritesEffects),
+    IonicStorageModule.forRoot(),
   ],
   providers: [
     CocktailsService,

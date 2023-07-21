@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError, map, filter } from 'rxjs';
+import { Observable, throwError, map } from 'rxjs';
 // import { catchError } from 'rxjs/operators';
 import {
   HttpClient,

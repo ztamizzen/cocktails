@@ -1,47 +1,52 @@
 import { Injectable } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { Storage } from '@ionic/storage-angular';
 import { Cocktail } from './cocktail';
 import { FavoritesState } from './favorites-state';
 
 const favoritesStorageKey = 'favorites';
-// helper
-const getFavorite = (drink: Cocktail): Cocktail | undefined => {
-  const storage = localStorage.getItem(favoritesStorageKey);
-  if (storage) {
-    const json = JSON.parse(storage) as FavoritesState;
-    if (json) {
-      return json.favorites.find((_drink) => _drink.idDrink === drink.idDrink);
-    }
-  }
-  return undefined;
-};
+
+// helper to clean up duplicates
+export const uniqueArray = (array: Cocktail[] = []) =>
+  array.filter(
+    (item, index, self) =>
+      index === self.findIndex((obj) => obj.idDrink === item.idDrink)
+  );
 
 @Injectable({
   providedIn: 'root',
 })
 export class FavoritesService {
-  constructor() {}
+  private storageInitialized = false;
+  constructor(private storage: Storage) {}
 
-  addFavorite(drink: Cocktail): void {
-    const storage = localStorage.getItem(favoritesStorageKey);
-    const isPresent = getFavorite(drink);
-    if (storage && isPresent) {
-      const json = JSON.parse(storage) as FavoritesState;
-      if (json) {
-        json.favorites.push(drink);
-        localStorage.setItem(favoritesStorageKey, JSON.stringify(json));
-      }
-    }
+  async loadFavorites(): Promise<Cocktail[]> {
+    if (!this.storageInitialized) await this.storage.create();
+    console.log(
+      '%cLoading from storage',
+      'color: yellow; background-color: blue; padding: 4px'
+    );
+    return this.storage.get(favoritesStorageKey);
   }
 
-  hasFavorite(drink: Cocktail): boolean {
-    return getFavorite(drink) !== undefined;
+  async saveFavorites(favorites: FavoritesState): Promise<boolean> {
+    if (!this.storageInitialized) await this.storage.create();
+    console.log(favorites);
+    console.log(
+      '%cSaving to storage',
+      'color: blue; background-color: yellow; padding: 4px',
+      favorites
+    );
+    // don't save nothing
+    if (favorites) {
+      const store = uniqueArray(favorites.favorites);
+      return this.storage.set(favoritesStorageKey, store);
+    }
+    return Promise.reject(false);
   }
 
-  removeFavorite(drink: Cocktail): boolean {
-    const storage = localStorage.getItem(favoritesStorageKey);
-    if (storage) {
-    }
-
-    return false;
+  async resetFavorites() {
+    if (!this.storageInitialized) await this.storage.create();
+    this.storage.remove(favoritesStorageKey);
   }
 }

@@ -1,0 +1,28 @@
+<div class="favorite-sheet__header">
+  <h3>Favorites</h3>
+  <button
+    mat-mini-fab
+    aria-label="Clear favorites"
+    title="Clear favorites"
+    class="favorite-sheet__button"
+    color="warn"
+    (click)="clearFavorites()"
+  >
+    <mat-icon>delete_forever</mat-icon>
+  </button>
+</div>
+<ul class="favorite-sheet__list">
+  <li
+    *ngFor="let favorite of favorites$ | async"
+    class="favorite-sheet__list-item"
+  >
+    <img
+      [src]="favorite.strDrinkThumb"
+      alt=""
+      class="favorite-sheet__list-image"
+    />
+    <a mat-button [routerLink]="['/drink', favorite.idDrink]">{{
+      favorite.strDrink
+    }}</a>
+  </li>
+</ul>

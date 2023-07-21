@@ -52,6 +52,16 @@
   />
   <span>Cocktails</span>
   <div class="spacer"></div>
+  <button
+    *ngIf="showFavoriteSheetIcon"
+    mat-icon-button
+    class="example-icon favorite-icon"
+    aria-label="Open favorites"
+    title="Open favorites"
+    (click)="openFavoritesSheet()"
+  >
+    <mat-icon>favorite</mat-icon>
+  </button>
 </div>
 
 <router-outlet></router-outlet>

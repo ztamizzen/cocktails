@@ -1,15 +1,18 @@
 import { Component, SimpleChanges } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { CocktailsService, type CocktailComplete } from '../cocktails.service';
 import { IngredientFilter } from '../ingredient-filter';
-import { Cocktail } from '../cocktail';
 import { AlcoholFilter } from '../alcohol-filter';
 import { CategoryFilter } from '../category-filter';
 import { GlassesFilter } from '../glasses-filter';
 import { Pagination } from '../pagination';
 import { DrinkListItem } from '../drink-list-item';
 import { Filters } from '../filters';
+import { selectFavorites } from '../store/selectors';
+import { FavoritesState } from '../favorites-state';
 
 @Component({
   selector: 'app-cocktail-list',
@@ -45,10 +48,15 @@ export class CocktailListComponent {
     pageSizeOptions: [5, 10, 25, 100],
     disabled: false,
   };
+  favorites$!: Observable<FavoritesState>;
 
-  constructor(private cocktailsService: CocktailsService) {}
+  constructor(
+    private cocktailsService: CocktailsService,
+    private store: Store<any>
+  ) {}
 
   ngOnInit() {
+    this.favorites$ = this.store.select(selectFavorites);
     this.cocktailsService.listAlcoholFilters().subscribe((response) => {
       this.alcoholFilters = response;
     });

@@ -1,3 +1,8 @@
-<button mat-mini-fab aria-label="Add as favorite" (click)="reset()">
+<button
+  mat-mini-fab
+  aria-label="Add as favorite"
+  (click)="addToFavorites()"
+  [color]="isFavorite ? 'warn' : 'primary'"
+>
   <mat-icon>favorite</mat-icon>
 </button>
