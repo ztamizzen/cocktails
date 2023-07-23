@@ -1,44 +1,28 @@
 <div class="content" role="main">
   <h2>List of cocktails</h2>
 
-  <app-filters
-    [category]="selectedCategoryFilter"
-    [ingredient]="selectedIngredientFilter"
-    (categoryChanged)="categoryChanged($event)"
-    (ingredientChanged)="ingredientChanged($event)"
-    (glassChanged)="glassChanged($event)"
-    (isAlcoholicChanged)="isAlcoholicChanged($event)"
-    (resetList)="resetList()"
-  />
+  <app-filters (categoryChanged)="categoryChanged($event)" (ingredientChanged)="ingredientChanged($event)"
+    (glassChanged)="glassChanged($event)" (isAlcoholicChanged)="isAlcoholicChanged($event)" (resetList)="resetList()" />
 
   <div class="sortBy">
     <span>Sort by:</span>
-    <mat-button-toggle-group
-      class="sortGroup"
-      [(ngModel)]="sortByValue"
-      (change)="sortBy($event)"
-      [disabled]="this.cocktailList.length === 0"
-    >
+    <mat-button-toggle-group class="sortGroup" [(ngModel)]="sortByValue" (change)="sortBy($event)"
+      [disabled]="this.cocktailList.length === 0">
       <mat-button-toggle value="category">Category</mat-button-toggle>
       <mat-button-toggle value="ingredient">Ingredient</mat-button-toggle>
       <mat-button-toggle value="glass">Glass</mat-button-toggle>
-      <mat-button-toggle value="isAlcoholic"
-        >Contains alcohol</mat-button-toggle
-      >
+      <mat-button-toggle value="isAlcoholic">Contains alcohol</mat-button-toggle>
     </mat-button-toggle-group>
-    <mat-button-toggle-group
-      [(ngModel)]="sortOrderValue"
-      (change)="sortOrder($event)"
-      [disabled]="this.cocktailList.length === 0"
-    >
+    <mat-button-toggle-group [(ngModel)]="sortOrderValue" (change)="sortOrder($event)"
+      [disabled]="this.cocktailList.length === 0">
       <mat-button-toggle value="ascending">Ascending</mat-button-toggle>
       <mat-button-toggle value="descending">Descending</mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 
   <p *ngIf="sortByValue && sortOrderValue">
-    Sorting by: <mark>{{ sortByValue }} / {{ sortOrderValue }}</mark
-    >, but since there is no default list there really is no point in sorting
+    Sorting by: <mark>{{ sortByValue }} / {{ sortOrderValue }}</mark>, but since there is no default list there really
+    is no point in sorting
     anything.
   </p>
 
@@ -46,23 +30,13 @@
     Showing filter for: <mark>{{ currentSearchValue }}</mark>
   </p>
 
-  <app-drink
-    [drink]="randomCocktail"
-    [showBackButton]="false"
-    *ngIf="cocktailList.length === 0"
-  />
+  <app-drink [drink]="randomCocktail" [showBackButton]="false" *ngIf="cocktailList.length === 0" />
 
   <div *ngIf="cocktailList.length > 0">
     <app-drink-card *ngFor="let drink of cocktailList" [drink]="drink" />
-    <mat-paginator
-      [disabled]="pagination.disabled"
-      [length]="pagination.length"
-      [pageSize]="pagination.pageSize"
-      [pageIndex]="pagination.pageIndex"
-      [pageSizeOptions]="pagination.pageSizeOptions"
-      (page)="paginationChanged($event)"
-      aria-label="Select page"
-    >
+    <mat-paginator [disabled]="pagination.disabled" [length]="pagination.length" [pageSize]="pagination.pageSize"
+      [pageIndex]="pagination.pageIndex" [pageSizeOptions]="pagination.pageSizeOptions"
+      (page)="paginationChanged($event)" aria-label="Select page">
     </mat-paginator>
   </div>
 </div>

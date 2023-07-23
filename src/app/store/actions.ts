@@ -1,6 +1,8 @@
 import { createAction, props } from '@ngrx/store';
 import { Cocktail } from '../cocktail';
+import { FilterState } from './app.state';
 
+/** === FAVORITES ACTIONS === **/
 export enum ActionTypes {
   Add = '[Cocktail] Add to favorites',
   Remove = '[Cocktail] Remove from favorites',
@@ -10,7 +12,6 @@ export enum ActionTypes {
   Reset = '[Cocktail] Reset',
   Save = '[Cocktail] Save to storage',
 }
-
 export const AddToFavorites = createAction(
   ActionTypes.Add,
   props<{ drink: Cocktail }>()
@@ -30,3 +31,21 @@ export const LoadFailure = createAction(
 );
 export const Reset = createAction(ActionTypes.Reset);
 export const Save = createAction(ActionTypes.Save);
+
+/** === FILTER ACTIONS === **/
+export enum FilterActions {
+  Update = '[Filters] Update filters',
+  Clear = '[Filters] Clear filters',
+  Load = '[Filters] Load filters',
+  Loaded = '[Filters] Loaded filters',
+}
+export const UpdateFilters = createAction(
+  FilterActions.Update,
+  props<FilterState>()
+);
+export const ClearFilters = createAction(FilterActions.Clear);
+export const LoadFilters = createAction(FilterActions.Load);
+export const LoadedFilters = createAction(
+  FilterActions.Loaded,
+  props<FilterState>()
+);

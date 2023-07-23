@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { MatBottomSheet } from '@angular/material/bottom-sheet';
 import { Store } from '@ngrx/store';
-import { FavoritesState } from './favorites-state';
 import * as FavoriteActions from './store/actions';
 import { FavoritesSheetComponent } from './favorites-sheet/favorites-sheet.component';
-import { selectAllFavorites, selectFavorites } from './store/selectors';
+import { selectAllFavorites } from './store/selectors';
 import { Observable } from 'rxjs';
 import { Cocktail } from './cocktail';
 

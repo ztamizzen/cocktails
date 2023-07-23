@@ -27,10 +27,11 @@ import { DrinkDetailsComponent } from './drink-details/drink-details.component';
 import { CachingInterceptor } from './caching.interceptor';
 import { FiltersComponent } from './filters/filters.component';
 import { DrinkCardComponent } from './drink-card/drink-card.component';
-import { favoriteReducer } from './store/reducers';
+import { favoriteReducer, filterReducer } from './store/reducers';
 import { AddToFavoritesComponent } from './add-to-favorites/add-to-favorites.component';
 import { EffectsModule } from '@ngrx/effects';
 import { FavoritesEffects } from './store/favorites.effect';
+import { FilterEffects } from './store/filters.effect';
 import { FavoritesSheetComponent } from './favorites-sheet/favorites-sheet.component';
 import { metaReducers } from './store/debug-reducer';
 
@@ -64,8 +65,11 @@ import { metaReducers } from './store/debug-reducer';
     MatPaginatorModule,
     MatButtonToggleModule,
     MatBottomSheetModule,
-    StoreModule.forRoot({ favorites: favoriteReducer }, { metaReducers }),
-    EffectsModule.forRoot(FavoritesEffects),
+    StoreModule.forRoot(
+      { favorites: favoriteReducer, filters: filterReducer },
+      { metaReducers }
+    ),
+    EffectsModule.forRoot(FavoritesEffects, FilterEffects),
     IonicStorageModule.forRoot(),
   ],
   providers: [

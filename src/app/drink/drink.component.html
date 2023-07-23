@@ -30,6 +30,8 @@
   </mat-card-content>
   <mat-card-actions align="end">
     <a mat-button (click)="goBack()" *ngIf="showBackButton">BACK</a>
-    <a mat-button [routerLink]="['/drink', drink.idDrink]">VIEW</a>
+    <a mat-button [routerLink]="['/drink', drink.idDrink]" *ngIf="!standalone"
+      >VIEW</a
+    >
   </mat-card-actions>
 </mat-card>

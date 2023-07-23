@@ -1,11 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Location } from '@angular/common';
-import { Observable } from 'rxjs';
-import { Store } from '@ngrx/store';
 import { CocktailComplete } from '../cocktails.service';
-import { AddToFavorites, RemoveFromFavorites } from '../store/actions';
-import { Cocktail } from '../cocktail';
-import { selectAllFavorites } from '../store/selectors';
 
 @Component({
   selector: 'app-drink',
@@ -15,18 +10,11 @@ import { selectAllFavorites } from '../store/selectors';
 export class DrinkComponent {
   @Input() drink: CocktailComplete | undefined;
   @Input() showBackButton: boolean = true;
-  favorites$!: Observable<Array<Cocktail>>;
-  isLiked: boolean = false;
+  @Input() standalone?: boolean = false;
 
-  constructor(private _location: Location, private store: Store<any>) {}
+  constructor(private _location: Location) {}
 
-  ngOnInit() {
-    this.favorites$ = this.store.select(selectAllFavorites);
-    this.favorites$.subscribe((favorites) => {
-      const foundIt = favorites.find((d) => d.idDrink === this.drink?.idDrink);
-      this.isLiked = foundIt !== undefined;
-    });
-  }
+  ngOnInit() {}
 
   goBack() {
     this._location.back();

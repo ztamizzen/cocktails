@@ -12,17 +12,22 @@ import { FavoritesState } from '../favorites-state';
   styleUrls: ['./add-to-favorites.component.scss'],
 })
 export class AddToFavoritesComponent implements OnInit {
-  @Input() drink?: Cocktail;
+  @Input() drink!: Cocktail;
   favorites$!: Observable<FavoritesState>;
   isFavorite = false;
+  checkingStatus = false;
 
   constructor(private store: Store<any>) {
     this.favorites$ = store.select(selectFavorites);
-    this.favorites$.subscribe((favs) => {
-      if (this.drink && favs.favorites && favs.favorites.length) {
-        this.isFavorite =
-          favs.favorites.find((d) => this.drink?.idDrink === d.idDrink) !==
-          undefined;
+    this.favorites$.subscribe((favorites: FavoritesState) => {
+      if (favorites.status === 'loading') {
+        this.checkingStatus = true;
+      } else if (favorites.status === 'success') {
+        this.checkingStatus = false;
+        const found = favorites.favorites.find(
+          (d) => this.drink?.idDrink === d.idDrink
+        );
+        this.isFavorite = found !== undefined;
       }
     });
   }

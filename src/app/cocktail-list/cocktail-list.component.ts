@@ -11,8 +11,9 @@ import { GlassesFilter } from '../glasses-filter';
 import { Pagination } from '../pagination';
 import { DrinkListItem } from '../drink-list-item';
 import { Filters } from '../filters';
-import { selectFavorites } from '../store/selectors';
+import { selectFavorites, selectFilters } from '../store/selectors';
 import { FavoritesState } from '../favorites-state';
+import { FilterState } from '../store/app.state';
 
 @Component({
   selector: 'app-cocktail-list',
@@ -48,15 +49,47 @@ export class CocktailListComponent {
     pageSizeOptions: [5, 10, 25, 100],
     disabled: false,
   };
-  favorites$!: Observable<FavoritesState>;
+
+  favorites$: Observable<FavoritesState> = this.store.select(selectFavorites);
+  filters$: Observable<FilterState> = this.store.select(selectFilters);
 
   constructor(
     private cocktailsService: CocktailsService,
     private store: Store<any>
   ) {}
 
+  /**
+   * TODO:
+   * the filter part needs a rewrite since using NGRX made most of it redundant.
+   * I don't need to send stuff up and down to the filter component anymore.
+   */
   ngOnInit() {
-    this.favorites$ = this.store.select(selectFavorites);
+    // when the filters are updated this will handle the logic
+    this.filters$.subscribe(({ filter, selected }) => {
+      console.log('filters$ >>', filter, selected);
+      if (filter && selected) {
+        switch (filter) {
+          case Filters.category:
+            console.log(filter, selected);
+            this.categoryChanged(selected);
+            break;
+          case Filters.ingredient:
+            console.log(filter, selected);
+            this.ingredientChanged(selected);
+            break;
+          case Filters.glass:
+            console.log(filter, selected);
+            this.glassChanged(selected);
+            break;
+          case Filters.alcohol:
+            console.log(filter, selected);
+            this.isAlcoholicChanged(selected);
+            break;
+        }
+      }
+    });
+
+    // load filters
     this.cocktailsService.listAlcoholFilters().subscribe((response) => {
       this.alcoholFilters = response;
     });
@@ -69,46 +102,17 @@ export class CocktailListComponent {
     this.cocktailsService.listIngredientFilters().subscribe((response) => {
       this.ingredientsFilters = response;
     });
+
     this.cocktailsService
       .getRandomCocktail()
       .subscribe((response: CocktailComplete) => {
         this.randomCocktail = response;
       });
-
-    if (sessionStorage.getItem('selectedCategoryFilter')) {
-      this.selectedCategoryFilter = sessionStorage.getItem(
-        'selectedCategoryFilter'
-      ) as string;
-      this.categoryChanged(this.selectedCategoryFilter);
-    }
-    if (sessionStorage.getItem('selectedIngredientFilter')) {
-      this.selectedIngredientFilter = sessionStorage.getItem(
-        'selectedIngredientFilter'
-      ) as string;
-      this.ingredientChanged(this.selectedIngredientFilter);
-    }
-    if (sessionStorage.getItem('selectedAlcoholicFilter')) {
-      this.selectedAlcoholicFilter = sessionStorage.getItem(
-        'selectedAlcoholicFilter'
-      ) as string;
-      this.isAlcoholicChanged(this.selectedAlcoholicFilter);
-    }
-    if (sessionStorage.getItem('selectedGlassFilter')) {
-      this.selectedGlassFilter = sessionStorage.getItem(
-        'selectedGlassFilter'
-      ) as string;
-      this.glassChanged(this.selectedGlassFilter);
-    }
-  }
-
-  ngOnChanges(o: SimpleChanges) {
-    console.log('ngOnChanges', o);
   }
 
   resetList() {
     this.fullResponseList = this.cocktailList = [];
     this.updatePagination(0);
-    console.log(this.fullResponseList, this.cocktailList);
   }
 
   paginationChanged(pageEvent: PageEvent) {
@@ -162,8 +166,6 @@ export class CocktailListComponent {
       case Filters.alcohol:
         this.isAlcoholicChanged(this.currentSearchValue);
         break;
-      default:
-        void console.log('no action taken');
     }
   }
 

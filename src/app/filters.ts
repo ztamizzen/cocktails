@@ -1,6 +1,6 @@
 export enum Filters {
-  category,
-  ingredient,
-  glass,
-  alcohol,
+  category = 'category',
+  ingredient = 'ingredient',
+  glass = 'glass',
+  alcohol = 'alcohol',
 }

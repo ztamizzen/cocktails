@@ -3,6 +3,16 @@
   aria-label="Add as favorite"
   (click)="addToFavorites()"
   [color]="isFavorite ? 'warn' : 'primary'"
+  *ngIf="!checkingStatus"
+>
+  <mat-icon>favorite</mat-icon>
+</button>
+
+<button
+  mat-mini-fab
+  aria-label="Cheking status"
+  [disabled]="true"
+  *ngIf="checkingStatus"
 >
   <mat-icon>favorite</mat-icon>
 </button>
