@@ -1,10 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { Cocktail } from '../cocktail';
+import { Cocktail } from '../interfaces/cocktail';
 import { AddToFavorites, RemoveFromFavorites, Reset } from '../store/actions';
 import { selectFavorites } from '../store/selectors';
-import { FavoritesState } from '../favorites-state';
+import { FavoritesState } from '../interfaces/favorites-state';
 
 @Component({
   selector: 'app-add-to-favorites',

@@ -10,11 +10,11 @@ import {
   startWith,
   switchMap,
 } from 'rxjs';
-import { CocktailsService } from '../cocktails.service';
-import { CategoryFilter } from '../category-filter';
-import { IngredientFilter } from '../ingredient-filter';
-import { AlcoholFilter } from '../alcohol-filter';
-import { GlassesFilter } from '../glasses-filter';
+import { CocktailsService } from '../services/cocktails.service';
+import { CategoryFilter } from '../interfaces/category-filter';
+import { IngredientFilter } from '../interfaces/ingredient-filter';
+import { AlcoholFilter } from '../interfaces/alcohol-filter';
+import { GlassesFilter } from '../interfaces/glasses-filter';
 import { Store } from '@ngrx/store';
 import { selectFilters } from '../store/selectors';
 import { FilterState } from '../store/app.state';

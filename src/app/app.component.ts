@@ -5,7 +5,7 @@ import * as FavoriteActions from './store/actions';
 import { FavoritesSheetComponent } from './favorites-sheet/favorites-sheet.component';
 import { selectAllFavorites } from './store/selectors';
 import { Observable } from 'rxjs';
-import { Cocktail } from './cocktail';
+import { Cocktail } from './interfaces/cocktail';
 
 @Component({
   selector: 'app-root',

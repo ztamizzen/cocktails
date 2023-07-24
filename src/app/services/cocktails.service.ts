@@ -7,7 +7,7 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { CocktailBuilderService } from './cocktail-builder.service';
-import { DrinkListItem } from './drink-list-item';
+import { DrinkListItem } from '../interfaces/drink-list-item';
 
 export interface CocktailComplete {
   [key: string]: string | undefined;

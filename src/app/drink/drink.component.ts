@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Location } from '@angular/common';
-import { CocktailComplete } from '../cocktails.service';
+import { CocktailComplete } from '../services/cocktails.service';
 
 @Component({
   selector: 'app-drink',

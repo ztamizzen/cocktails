@@ -3,16 +3,19 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { CocktailsService, type CocktailComplete } from '../cocktails.service';
-import { IngredientFilter } from '../ingredient-filter';
-import { AlcoholFilter } from '../alcohol-filter';
-import { CategoryFilter } from '../category-filter';
-import { GlassesFilter } from '../glasses-filter';
-import { Pagination } from '../pagination';
-import { DrinkListItem } from '../drink-list-item';
+import {
+  CocktailsService,
+  type CocktailComplete,
+} from '../services/cocktails.service';
+import { IngredientFilter } from '../interfaces/ingredient-filter';
+import { AlcoholFilter } from '../interfaces/alcohol-filter';
+import { CategoryFilter } from '../interfaces/category-filter';
+import { GlassesFilter } from '../interfaces/glasses-filter';
+import { Pagination } from '../interfaces/pagination';
+import { DrinkListItem } from '../interfaces/drink-list-item';
 import { Filters } from '../filters';
 import { selectFavorites, selectFilters } from '../store/selectors';
-import { FavoritesState } from '../favorites-state';
+import { FavoritesState } from '../interfaces/favorites-state';
 import { FilterState } from '../store/app.state';
 
 @Component({

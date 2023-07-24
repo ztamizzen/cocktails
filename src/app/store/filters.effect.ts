@@ -10,7 +10,7 @@ import {
 } from 'rxjs/operators';
 import * as FavoriteActions from './actions';
 import { Store } from '@ngrx/store';
-import { FilterService } from '../filter.service';
+import { FilterService } from '../services/filter.service';
 
 @Injectable()
 export class FilterEffects {

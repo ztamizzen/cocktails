@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Cocktail } from '../cocktail';
+import { Cocktail } from '../interfaces/cocktail';
 
 @Component({
   selector: 'app-drink-card',

@@ -1,7 +1,7 @@
 import { createReducer, on } from '@ngrx/store';
 import * as FavoriteActions from './actions';
-import { FavoritesState } from '../favorites-state';
-import { uniqueArray } from '../favorites.service';
+import { FavoritesState } from '../interfaces/favorites-state';
+import { uniqueArray } from '../services/favorites.service';
 import { FilterState } from './app.state';
 
 export enum Statuses {

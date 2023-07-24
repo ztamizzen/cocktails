@@ -9,7 +9,7 @@ import {
   switchMap,
 } from 'rxjs/operators';
 import * as FavoriteActions from './actions';
-import { FavoritesService } from '../favorites.service';
+import { FavoritesService } from '../services/favorites.service';
 import { Store } from '@ngrx/store';
 
 @Injectable()

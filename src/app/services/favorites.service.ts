@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { Cocktail } from './cocktail';
-import { FavoritesState } from './favorites-state';
+import { Cocktail } from '../interfaces/cocktail';
+import { FavoritesState } from '../interfaces/favorites-state';
 
 const favoritesStorageKey = 'favorites';
 

@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
 import { Store } from '@ngrx/store';
-import { Cocktail } from '../cocktail';
+import { Cocktail } from '../interfaces/cocktail';
 import { selectAllFavorites } from '../store/selectors';
 import * as Actions from '../store/actions';
 

@@ -1,4 +1,4 @@
-import { FavoritesState } from '../favorites-state';
+import { FavoritesState } from '../interfaces/favorites-state';
 import { Filters } from '../filters';
 
 export interface FilterState {

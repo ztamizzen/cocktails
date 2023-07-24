@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { CocktailComplete, CocktailsService } from '../cocktails.service';
-import { FavoritesState } from '../favorites-state';
+import {
+  CocktailComplete,
+  CocktailsService,
+} from '../services/cocktails.service';
+import { FavoritesState } from '../interfaces/favorites-state';
 
 @Component({
   selector: 'app-drink-details',

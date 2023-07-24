@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { Cocktail } from '../cocktail';
+import { Cocktail } from '../interfaces/cocktail';
 import { FilterState } from './app.state';
 
 /** === FAVORITES ACTIONS === **/
