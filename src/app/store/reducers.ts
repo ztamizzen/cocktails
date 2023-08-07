@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import * as FavoriteActions from './actions';
 import { FavoritesState } from '../interfaces/favorites-state';
 import { uniqueArray } from '../services/favorites.service';
-import { FilterState } from './app.state';
+import { FilterState } from '../interfaces/app.state';
 
 export enum Statuses {
   pending = 'pending',

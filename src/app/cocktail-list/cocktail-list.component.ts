@@ -3,10 +3,7 @@ import { PageEvent } from '@angular/material/paginator';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import {
-  CocktailsService,
-  type CocktailComplete,
-} from '../services/cocktails.service';
+import { CocktailsService } from '../services/cocktails.service';
 import { IngredientFilter } from '../interfaces/ingredient-filter';
 import { AlcoholFilter } from '../interfaces/alcohol-filter';
 import { CategoryFilter } from '../interfaces/category-filter';
@@ -16,7 +13,8 @@ import { DrinkListItem } from '../interfaces/drink-list-item';
 import { Filters } from '../filters';
 import { selectFavorites, selectFilters } from '../store/selectors';
 import { FavoritesState } from '../interfaces/favorites-state';
-import { FilterState } from '../store/app.state';
+import { FilterState } from '../interfaces/app.state';
+import { FullCocktail } from '../interfaces/full-cocktail';
 
 @Component({
   selector: 'app-cocktail-list',
@@ -41,17 +39,13 @@ export class CocktailListComponent {
   categoryFilters?: CategoryFilter;
   ingredientsFilters?: IngredientFilter;
   glassFilters?: GlassesFilter;
-  randomCocktail?: CocktailComplete;
+  randomCocktail?: FullCocktail;
 
   cocktailList: DrinkListItem[] = [];
-  pagination: Pagination = {
-    pageSize: 10,
-    length: 0,
-    page: 0,
-    pageIndex: 1,
-    pageSizeOptions: [5, 10, 25, 100],
-    disabled: false,
-  };
+  pageSize: number = 10;
+  pageIndex: number = 0;
+  pageSizeOptions: Array<number> = [5, 10, 25, 100];
+  paginationDisabled: boolean = false;
 
   favorites$: Observable<FavoritesState> = this.store.select(selectFavorites);
   filters$: Observable<FilterState> = this.store.select(selectFilters);
@@ -61,31 +55,21 @@ export class CocktailListComponent {
     private store: Store<any>
   ) {}
 
-  /**
-   * TODO:
-   * the filter part needs a rewrite since using NGRX made most of it redundant.
-   * I don't need to send stuff up and down to the filter component anymore.
-   */
   ngOnInit() {
     // when the filters are updated this will handle the logic
     this.filters$.subscribe(({ filter, selected }) => {
-      console.log('filters$ >>', filter, selected);
       if (filter && selected) {
         switch (filter) {
           case Filters.category:
-            console.log(filter, selected);
             this.categoryChanged(selected);
             break;
           case Filters.ingredient:
-            console.log(filter, selected);
             this.ingredientChanged(selected);
             break;
           case Filters.glass:
-            console.log(filter, selected);
             this.glassChanged(selected);
             break;
           case Filters.alcohol:
-            console.log(filter, selected);
             this.isAlcoholicChanged(selected);
             break;
         }
@@ -106,9 +90,13 @@ export class CocktailListComponent {
       this.ingredientsFilters = response;
     });
 
+    this.reloadRandomCocktail();
+  }
+
+  reloadRandomCocktail() {
     this.cocktailsService
       .getRandomCocktail()
-      .subscribe((response: CocktailComplete) => {
+      .subscribe((response: FullCocktail) => {
         this.randomCocktail = response;
       });
   }
@@ -119,40 +107,31 @@ export class CocktailListComponent {
   }
 
   paginationChanged(pageEvent: PageEvent) {
-    // if pageSize is updated we reset everything, or do some math magic
-    if (pageEvent.pageSize !== this.pagination.pageSize) {
-      this.pagination.page = 0;
-      this.pagination.previousPage = 0;
-      this.pagination.pageIndex = 0;
+    console.log(pageEvent, this.pageIndex);
+    if (pageEvent.pageSize !== this.pageSize) {
+      this.pageIndex = 0;
     } else {
-      this.pagination.page = pageEvent.pageIndex;
-      this.pagination.previousPage = pageEvent.previousPageIndex as number;
-      this.pagination.pageIndex = pageEvent.pageIndex;
+      this.pageIndex = pageEvent.pageIndex;
     }
-    this.pagination.pageSize = pageEvent.pageSize;
+    this.pageSize = pageEvent.pageSize;
     this.paginationUpdated = true;
     this.search();
   }
 
   updatePagination(responseSize: number) {
-    this.pagination.length = responseSize;
     if (responseSize < 10) {
-      this.pagination.disabled = true;
+      this.paginationDisabled = true;
+      this.pageIndex = 0;
     } else {
-      this.pagination.disabled = false;
+      this.paginationDisabled = false;
     }
   }
 
-  resetPagination(size: number = 0) {
-    this.pagination = {
-      pageSize: 10,
-      length: size,
-      page: 0,
-      pageIndex: 0,
-      pageSizeOptions: [5, 10, 25, 100],
-      disabled: false,
-      previousPage: 0,
-    };
+  resetPagination() {
+    this.paginationDisabled = false;
+    this.pageIndex = 0;
+    this.pageSizeOptions = [5, 10, 25, 100];
+    this.pageSize = 10;
   }
 
   search() {
@@ -174,10 +153,8 @@ export class CocktailListComponent {
 
   paginateResponse(response: DrinkListItem[]) {
     return response.slice(
-      this.pagination.page *
-        Math.min(response.length, this.pagination.pageSize),
-      Math.min(response.length, this.pagination.pageSize) *
-        (this.pagination.page + 1)
+      this.pageIndex * Math.min(response.length, this.pageSize),
+      Math.min(response.length, this.pageSize) * (this.pageIndex + 1)
     );
   }
 

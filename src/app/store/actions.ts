@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { Cocktail } from '../interfaces/cocktail';
-import { FilterState } from './app.state';
+import { FilterState } from '../interfaces/app.state';
 
 /** === FAVORITES ACTIONS === **/
 export enum ActionTypes {

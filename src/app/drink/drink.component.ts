@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Location } from '@angular/common';
-import { CocktailComplete } from '../services/cocktails.service';
+import { FullCocktail } from '../interfaces/full-cocktail';
 
 @Component({
   selector: 'app-drink',
@@ -8,7 +8,7 @@ import { CocktailComplete } from '../services/cocktails.service';
   styleUrls: ['./drink.component.scss'],
 })
 export class DrinkComponent {
-  @Input() drink: CocktailComplete | undefined;
+  @Input() drink: FullCocktail | undefined;
   @Input() showBackButton: boolean = true;
   @Input() standalone?: boolean = false;
 

@@ -17,7 +17,7 @@ import { AlcoholFilter } from '../interfaces/alcohol-filter';
 import { GlassesFilter } from '../interfaces/glasses-filter';
 import { Store } from '@ngrx/store';
 import { selectFilters } from '../store/selectors';
-import { FilterState } from '../store/app.state';
+import { FilterState } from '../interfaces/app.state';
 import { ClearFilters, UpdateFilters } from '../store/actions';
 import { Filters } from '../filters';
 
@@ -27,10 +27,6 @@ import { Filters } from '../filters';
   styleUrls: ['./filters.component.scss'],
 })
 export class FiltersComponent {
-  @Output() categoryChanged = new EventEmitter<string>();
-  @Output() ingredientChanged = new EventEmitter<string>();
-  @Output() glassChanged = new EventEmitter<string>();
-  @Output() isAlcoholicChanged = new EventEmitter<string>();
   @Output() resetList = new EventEmitter();
 
   categoryFilters?: CategoryFilter;
@@ -83,25 +79,21 @@ export class FiltersComponent {
 
     this.filterForm.get('category')?.valueChanges.subscribe((value) => {
       this.dispatchAction(Filters.category, value as string);
-      this.categoryChanged.emit(value as string);
       this.resetFields({ ingredient: '', alcoholic: '', glass: '' });
     });
 
     this.filterForm.get('ingredient')?.valueChanges.subscribe((value) => {
       this.dispatchAction(Filters.ingredient, value as string);
-      this.ingredientChanged.emit(value as string);
       this.resetFields({ category: '', alcoholic: '', glass: '' });
     });
 
     this.filterForm.get('glass')?.valueChanges.subscribe((value) => {
       this.dispatchAction(Filters.glass, value as string);
-      this.glassChanged.emit(value as string);
       this.resetFields({ category: '', ingredient: '', alcoholic: '' });
     });
 
     this.filterForm.get('isAlcoholic')?.valueChanges.subscribe((value) => {
       this.dispatchAction(Filters.alcohol, value as string);
-      this.isAlcoholicChanged.emit(value as string);
       this.resetFields({ category: '', ingredient: '', glass: '' });
     });
 

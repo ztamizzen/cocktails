@@ -1,8 +1,7 @@
 <div class="content" role="main">
   <h2>List of cocktails</h2>
 
-  <app-filters (categoryChanged)="categoryChanged($event)" (ingredientChanged)="ingredientChanged($event)"
-    (glassChanged)="glassChanged($event)" (isAlcoholicChanged)="isAlcoholicChanged($event)" (resetList)="resetList()" />
+  <app-filters (resetList)="resetList()" />
 
   <div class="sortBy">
     <span>Sort by:</span>
@@ -18,6 +17,12 @@
       <mat-button-toggle value="ascending">Ascending</mat-button-toggle>
       <mat-button-toggle value="descending">Descending</mat-button-toggle>
     </mat-button-toggle-group>
+    <div *ngIf="cocktailList.length === 0" style="margin-inline-start: 20px">
+      <button mat-fab color="primary" (click)="reloadRandomCocktail()" aria-label="Refresh random cocktail"
+        title="Refresh random cocktail">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
   </div>
 
   <p *ngIf="sortByValue && sortOrderValue">
@@ -34,9 +39,9 @@
 
   <div *ngIf="cocktailList.length > 0">
     <app-drink-card *ngFor="let drink of cocktailList" [drink]="drink" />
-    <mat-paginator [disabled]="pagination.disabled" [length]="pagination.length" [pageSize]="pagination.pageSize"
-      [pageIndex]="pagination.pageIndex" [pageSizeOptions]="pagination.pageSizeOptions"
-      (page)="paginationChanged($event)" aria-label="Select page">
+    <mat-paginator [disabled]="paginationDisabled" [length]="fullResponseList.length" [pageSize]="pageSize"
+      [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions" (page)="paginationChanged($event)"
+      aria-label="Select page">
     </mat-paginator>
   </div>
 </div>

@@ -8,6 +8,7 @@ import {
 } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { SKIP_CACHE } from '../services/cocktails.service';
 
 @Injectable()
 export class CachingInterceptor implements HttpInterceptor {
@@ -20,6 +21,9 @@ export class CachingInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (request.method !== 'GET') {
+      return next.handle(request);
+    }
+    if (request.context.get(SKIP_CACHE)) {
       return next.handle(request);
     }
 

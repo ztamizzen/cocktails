@@ -1,5 +1,5 @@
 import { createSelector } from '@ngrx/store';
-import { AppState } from './app.state';
+import { AppState } from '../interfaces/app.state';
 import { FavoritesState } from '../interfaces/favorites-state';
 
 export const selectFavorites = (state: AppState) => state.favorites;

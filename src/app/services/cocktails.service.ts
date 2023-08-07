@@ -5,67 +5,17 @@ import {
   HttpClient,
   HttpHeaders,
   HttpErrorResponse,
+  HttpContextToken,
+  HttpContext,
 } from '@angular/common/http';
 import { CocktailBuilderService } from './cocktail-builder.service';
 import { DrinkListItem } from '../interfaces/drink-list-item';
+import { FullCocktail } from '../interfaces/full-cocktail';
 
-export interface CocktailComplete {
-  [key: string]: string | undefined;
-  idDrink?: string;
-  strDrink?: string;
-  strDrinkAlternate?: string;
-  strTags?: string;
-  strVideo?: string;
-  strCategory?: string;
-  strIBA?: string;
-  strAlcoholic?: 'Alcoholic' | 'Non alcoholic' | 'Optional alcohol';
-  strGlass?: string;
-  strInstructions?: string;
-  strInstructionsES?: string;
-  strInstructionsDE?: string;
-  strInstructionsFR?: string;
-  strInstructionsIT?: string;
-  'strInstructionsZH-HANS'?: string;
-  'strInstructionsZH-HANT'?: string;
-  strDrinkThumb?: string;
-  strIngredient1?: string;
-  strIngredient2?: string;
-  strIngredient3?: string;
-  strIngredient4?: string;
-  strIngredient5?: string;
-  strIngredient6?: string;
-  strIngredient7?: string;
-  strIngredient8?: string;
-  strIngredient9?: string;
-  strIngredient10?: string;
-  strIngredient11?: string;
-  strIngredient12?: string;
-  strIngredient13?: string;
-  strIngredient14?: string;
-  strIngredient15?: string;
-  strMeasure1?: string;
-  strMeasure2?: string;
-  strMeasure3?: string;
-  strMeasure4?: string;
-  strMeasure5?: string;
-  strMeasure6?: string;
-  strMeasure7?: string;
-  strMeasure8?: string;
-  strMeasure9?: string;
-  strMeasure10?: string;
-  strMeasure11?: string;
-  strMeasure12?: string;
-  strMeasure13?: string;
-  strMeasure14?: string;
-  strMeasure15?: string;
-  strImageSource?: string;
-  strImageAttribution?: string;
-  strCreativeCommonsConfirmed?: string;
-  dateModified?: string;
-}
+export const SKIP_CACHE = new HttpContextToken(() => true);
 
 export interface CocktailResponse {
-  drinks: Array<CocktailComplete>;
+  drinks: Array<FullCocktail>;
 }
 export interface DrinksListResponse {
   drinks: Array<DrinkListItem>;
@@ -139,16 +89,20 @@ export class CocktailsService {
 
   getRandomCocktail() {
     let API_URL = `${this.apiUrl}/random.php`;
-    return this.http.get<CocktailResponse>(API_URL).pipe(
-      map((response) => {
-        return this.cocktailBuilder.mapIngredientsAndMeasurements(
-          response.drinks[0]
-        );
+    return this.http
+      .get<CocktailResponse>(API_URL, {
+        context: new HttpContext().set(SKIP_CACHE, true),
       })
-    );
+      .pipe(
+        map((response) => {
+          return this.cocktailBuilder.mapIngredientsAndMeasurements(
+            response.drinks[0]
+          );
+        })
+      );
   }
 
-  getCocktail(id: string): Observable<CocktailComplete> {
+  getCocktail(id: string): Observable<FullCocktail> {
     let API_URL = `${this.apiUrl}/lookup.php?i=${id}`;
     return this.http.get<CocktailResponse>(API_URL).pipe(
       map((response) => {

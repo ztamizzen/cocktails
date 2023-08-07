@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage-angular';
-import { FilterState } from '../store/app.state';
+import { FilterState } from '../interfaces/app.state';
 
 @Injectable({
   providedIn: 'root',

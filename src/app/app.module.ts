@@ -34,6 +34,7 @@ import { FavoritesEffects } from './store/favorites.effect';
 import { FilterEffects } from './store/filters.effect';
 import { FavoritesSheetComponent } from './favorites-sheet/favorites-sheet.component';
 import { metaReducers } from './store/debug-reducer';
+import { httpInterceptorProviders } from './http-interceptors';
 
 @NgModule({
   declarations: [
@@ -72,10 +73,7 @@ import { metaReducers } from './store/debug-reducer';
     EffectsModule.forRoot(FavoritesEffects, FilterEffects),
     IonicStorageModule.forRoot(),
   ],
-  providers: [
-    CocktailsService,
-    { provide: HTTP_INTERCEPTORS, useClass: CachingInterceptor, multi: true },
-  ],
+  providers: [CocktailsService, httpInterceptorProviders],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

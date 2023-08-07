@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import {
-  CocktailComplete,
-  CocktailsService,
-} from '../services/cocktails.service';
+import { CocktailsService } from '../services/cocktails.service';
 import { FavoritesState } from '../interfaces/favorites-state';
+import { FullCocktail } from '../interfaces/full-cocktail';
 
 @Component({
   selector: 'app-drink-details',
@@ -13,7 +11,7 @@ import { FavoritesState } from '../interfaces/favorites-state';
   styleUrls: ['./drink-details.component.scss'],
 })
 export class DrinkDetailsComponent implements OnInit {
-  drink: CocktailComplete | undefined;
+  drink: FullCocktail | undefined;
 
   constructor(
     private route: ActivatedRoute,

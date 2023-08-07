@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CocktailComplete } from './cocktails.service';
+import { FullCocktail } from '../interfaces/full-cocktail';
 
 @Injectable({
   providedIn: 'root',
@@ -7,8 +7,8 @@ import { CocktailComplete } from './cocktails.service';
 export class CocktailBuilderService {
   constructor() {}
 
-  mapIngredientsAndMeasurements(drink: CocktailComplete) {
-    let cocktail: CocktailComplete = {};
+  mapIngredientsAndMeasurements(drink: FullCocktail) {
+    let cocktail: FullCocktail = {};
     for (let key in drink) {
       let e = new RegExp('^strIngredient(?<number>[0-9]*)$');
       let r = e.exec(key);
