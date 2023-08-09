@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FavoritesSheetComponent } from './favorites-sheet.component';
+import { MatBottomSheetRef } from '@angular/material/bottom-sheet';
+import { Store } from '@ngrx/store';
 
 describe('FavoritesSheetComponent', () => {
   let component: FavoritesSheetComponent;
@@ -8,7 +10,8 @@ describe('FavoritesSheetComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FavoritesSheetComponent]
+      declarations: [FavoritesSheetComponent],
+      providers: [MatBottomSheetRef, Store],
     });
     fixture = TestBed.createComponent(FavoritesSheetComponent);
     component = fixture.componentInstance;
